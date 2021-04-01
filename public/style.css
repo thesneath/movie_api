@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+}
+
+table {
+  border-spacing: 0px;
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 15px; 
+  text-align: left;
+}
+
+th {
+  font-weight: bold;
+  border: 1px solid #cccccc;
+  padding: 8px;
+}
+
+td {
+  border: 1px solid #cccccc; 
+  padding: 8px;
+}
+
+.table--title {
+  text-align: center;
+  background-color: #2E4259;
+  color: #EDF2F2;
+  font-size: 24px;
+}
+
+.table--head {
+  text-align: center;
+  background-color: gray
+}
+
+.table-shaded {
+  background-color: lightgray;
+}

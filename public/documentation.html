@@ -3,6 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>AlexMDB</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <h1>AlexMDB</h1>
@@ -10,5 +11,100 @@
       This web app provides users access to information about different movies, directors, and genres.
       Users can sign up, edit personal info, and create a list of their favorite movies.
     </p>
+
+    <!-- 
+    A high-level description of what kind of data the endpoint returns
+    The endpoint URL
+    The method type (GET, POST, PUT, or DELETE)
+    The query parameters (parameters in the URL)
+    The format of data expected in the body of the request (and an example)
+    The format of the response data
+ -->
+
+    <table>
+      <tr>
+        <th class="table--title" colspan="6">REST API</th>
+      </tr>
+      <tr class="table--head">
+        <th>Endpoint</th>
+        <th>Description</th>
+        <th>Method Type</th>
+        <th>Parameters</th>
+        <th>Request Body</th>
+        <th>Response Body</th>
+      </tr>
+      <tr class="table-light">
+        <td>/movies</td>
+        <td>Returns all movies</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>none</td>
+        <td>JSON</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>/movies/:title/</td>
+        <td>Returns specific movie by title</td>
+        <td>GET</td>
+        <td>:title</td>
+        <td>none</td>
+        <td>JSON</td>
+      </tr>
+      <tr class="table-light">
+        <td>/movies/:title/:genre/</td>
+        <td>Returns specific movie's genre by title</td>
+        <td>GET</td>
+        <td>:title, :genre</td>
+        <td>none</td>
+        <td>JSON</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>/directors/:name/</td>
+        <td>Returns a director by name</td>
+        <td>GET</td>
+        <td>:name</td>
+        <td>none</td>
+        <td>JSON</td>
+      </tr>
+      <tr class="table-light">
+        <td>/users/</td>
+        <td>Registers a new username</td>
+        <td>POST</td>
+        <td>:title</td>
+        <td>JSON</td>
+        <td>JSON</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>/users/:username/</td>
+        <td>Update username</td>
+        <td>PUT</td>
+        <td>:username</td>
+        <td>JSON</td>
+        <td>JSON</td>
+      </tr>
+      <tr class="table-light">
+        <td>/users/:username/</td>
+        <td>Delete user</td>
+        <td>DELETE</td>
+        <td>:username</td>
+        <td>none</td>
+        <td>JSON</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>/users/:username/my-movies/</td>
+        <td>Add movie to my movie list</td>
+        <td>POST</td>
+        <td>:username</td>
+        <td>JSON</td>
+        <td>JSON</td>
+      </tr>
+      <tr class="table-light">
+        <td>/users/:username/my-movies/</td>
+        <td>Remove movie from my movie list</td>
+        <td>DELETE</td>
+        <td>:username</td>
+        <td>JSON</td>
+        <td>JSON</td>
+      </tr>
+    </table>
   </body>
 </html>

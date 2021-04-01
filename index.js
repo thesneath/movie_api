@@ -2,9 +2,10 @@ const express = require('express'),
   morgan = require('morgan');
 const app = express();
 
-const topMovies = [
+const movies = [
   {
-    'title': 'Interstellar'
+    'title': 'Interstellar',
+    'genre': 'Science Fiction'
   },
   {
     'title': 'Annihilation'
@@ -42,14 +43,56 @@ app.use((err, req, res, next) => {
   res.status(500).send('Oops! It Broke.')
 })
 
+// get requests 
 
 app.get('/', (req, res) => {
   res.send('Welcome to my App!');
 });
 
 app.get('/movies', (req, res) => {
-  res.json(topMovies);
+  res.json(movies);
 });
+
+app.get('/movies/:title/', (req, res) => {
+  res.json(movies.find((movie) => {
+    return movie.title === req.params.title;
+  }));
+});
+
+app.get('/movies/:title/:genre/', (req, res) => {
+  res.send('Successful GET request for a genre of specfic flick');
+});
+
+app.get('/directors/:name', (req, res) => {
+  res.send('Success GET request for a director by name');
+});
+
+// post requests 
+
+app.post('/users/', (req, res) => {
+  res.send('Registration complete!');
+});
+
+app.post('/users/:username/my-movies', (req, res) => {
+  res.send('Added movie to my movies');
+});
+
+// put requests 
+
+app.put('/users/:username/', (req, res) => {
+  res.send('Username updated!');
+});
+
+// delete requests 
+
+app.delete('/users/:username', (req, res) => {
+  res.send('User account deleted.');
+});
+
+app.delete('/users/:username/my-movies', (req, res) => {
+  res.send('Movie removed from my movies.')
+})
+
 
 app.listen(8080, () => {
   console.log('App is running on port 8080.')
