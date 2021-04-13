@@ -26,84 +26,389 @@
         <th class="table--title" colspan="6">REST API</th>
       </tr>
       <tr class="table--head">
-        <th>Endpoint</th>
-        <th>Description</th>
-        <th>Method Type</th>
-        <th>Parameters</th>
-        <th>Request Body</th>
-        <th>Response Body</th>
+        <th>ENDPOINT</th>
+        <th>DESCRIPTION</th>
+        <th>METHOD</th>
+        <th>PARAMETERS</th>
+        <th>REQUESTBODY</th>
+        <th>RESPONSEBODY</th>
       </tr>
       <tr class="table-light">
         <td>/movies</td>
         <td>Returns all movies</td>
         <td>GET</td>
-        <td>none</td>
-        <td>none</td>
-        <td>JSON</td>
+        <td>None</td>
+        <td>None</td>
+        <td>JSON
+          [
+            {
+              "Genre": { Name, Description },
+              "Director": { Name, Bio, Birthyear, Deathyear },
+              "Actors": [Actors],
+              "ID": ID,
+              "Title": Title,
+              "Description": Description,
+              "ImagePath": Link,
+              "Featured": Boolean
+            },
+          ]
+        </td>
       </tr>
       <tr class="table-shaded">
-        <td>/movies/:title/</td>
+        <td>/Movies/:Title/</td>
         <td>Returns specific movie by title</td>
         <td>GET</td>
-        <td>:title</td>
-        <td>none</td>
-        <td>JSON</td>
+        <td>:Title</td>
+        <td>None</td>
+        <td>JSON, {
+          "Genre": { Name, Description },
+          "Director": { Name, Bio, Birthyear, Deathyear },
+          "Actors": [Actors],
+          "ID": ID,
+          "Title": Title,
+          "Description": Description,
+          "ImagePath": Link,
+          "Featured": Boolean
+        }</td>
       </tr>
       <tr class="table-light">
-        <td>/movies/:title/:genre/</td>
-        <td>Returns specific movie's genre by title</td>
+        <td>/Movies/Genre/:Name</td>
+        <td>Returns specific movie's genre by name</td>
         <td>GET</td>
-        <td>:title, :genre</td>
-        <td>none</td>
-        <td>JSON</td>
+        <td>:Name</td>
+        <td>None</td>
+        <td>JSON, "Genre": { Name, Description }</td>
       </tr>
       <tr class="table-shaded">
-        <td>/directors/:name/</td>
+        <td>Movies/Director/:Name/</td>
         <td>Returns a director by name</td>
         <td>GET</td>
-        <td>:name</td>
-        <td>none</td>
-        <td>JSON</td>
+        <td>:Name</td>
+        <td>None</td>
+        <td>JSON, "Director": { Name, Bio, Birthyear, Deathyear },
+        </td>
+      </tr>
+      <tr class="table-light">
+        <td>/users/</td>
+        <td>Returns all users</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>None</td>
+        <td>JSON, 
+          [
+            {
+              "Username": Username
+              "Password": Password,
+              "Email": Email,
+              "Birthday": Birthday
+              "FavoriteMovies": [FavoriteMovies]
+            },
+          ]
+        </td>
+      </tr>
+      <tr class="table-shaded">
+        <td>/users/:Username</td>
+        <td>Returns User by Username</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>None</td>
+        <td>JSON, 
+            {
+              "_id": ID,
+              "Username": Username
+              "Password": Password,
+              "Email": Email,
+              "Birthday": Birthday,
+              "FavoriteMovies": [FavoriteMovies]
+            }
+        </td>
       </tr>
       <tr class="table-light">
         <td>/users/</td>
         <td>Registers a new username</td>
         <td>POST</td>
-        <td>:title</td>
-        <td>JSON</td>
-        <td>JSON</td>
+        <td>None</td>
+        <td>JSON, 
+          {
+            "Username": Username
+            "Password": Password,
+            "Email": Email,
+            "Birthday": Birthday
+          }
+        </td>
+        <td>JSON, 
+          {
+            "_id": ID,
+            "Username": Username
+            "Password": Password,
+            "Email": Email,
+            "Birthday": Birthday,
+            "FavoriteMovies": [FavoriteMovies]
+          }
+        </td>
       </tr>
       <tr class="table-shaded">
-        <td>/users/:username/</td>
-        <td>Update username</td>
-        <td>PUT</td>
-        <td>:username</td>
-        <td>JSON</td>
-        <td>JSON</td>
+        <td>/users/:Username/Movies/:MovieID</td>
+        <td>Add movie to FavoriteMovies by a movie's ID</td>
+        <td>POST</td>
+        <td>:Username, :MovieID</td>
+        <td>None</td>
+        <td>JSON, 
+          {
+            "_id": ID,
+            "Username": Username
+            "Password": Password,
+            "Email": Email,
+            "Birthday": Birthday,
+            "FavoriteMovies": [FavoriteMovies]
+          }
+        </td>
       </tr>
       <tr class="table-light">
-        <td>/users/:username/</td>
-        <td>Delete user</td>
-        <td>DELETE</td>
-        <td>:username</td>
-        <td>none</td>
-        <td>JSON</td>
-      </tr>
-      <tr class="table-shaded">
-        <td>/users/:username/my-movies/</td>
+        <td>/users/:Username/Movies/:MovieID</td>
         <td>Add movie to my movie list</td>
         <td>POST</td>
-        <td>:username</td>
-        <td>JSON</td>
-        <td>JSON</td>
+        <td>:Username, :MovieID</td>
+        <td>None</td>
+        <td>JSON,
+          {
+            "_id": ID,
+            "Username": Username
+            "Password": Password,
+            "Email": Email,
+            "Birthday": Birthday,
+            "FavoriteMovies": [FavoriteMovies]
+          } 
+        </td>
+      </tr>
+      <tr class="table-shaded">
+        <td>/users/:Username/</td>
+        <td>Update username</td>
+        <td>PUT</td>
+        <td>:Username</td>
+        <td>JSON,
+          {
+            "Username": Username
+            "Password": Password,
+            "Email": Email,
+            "Birthday": Birthday
+          }
+        </td>
+        <td>JSON
+          {
+            "_id": ID,
+            "Username": Username
+            "Password": Password,
+            "Email": Email,
+            "Birthday": Birthday,
+            "FavoriteMovies": [FavoriteMovies]
+          }
+        </td>
       </tr>
       <tr class="table-light">
-        <td>/users/:username/my-movies/</td>
+        <td>/users/:Username/</td>
+        <td>Delete user</td>
+        <td>DELETE</td>
+        <td>:Username</td>
+        <td>None</td>
+        <td>None</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>/users/:Username/Movies/:MovieID</td>
         <td>Remove movie from my movie list</td>
         <td>DELETE</td>
-        <td>:username</td>
-        <td>JSON</td>
-        <td>JSON</td>
+        <td>:Username, :MovieID</td>
+        <td>None</td>
+        <td>None</td>
+      </tr>
+      <tr class="table-light">
+        <td>/users/:Username</td>
+        <td>Delete User</td>
+        <td>DELETE</td>
+        <td>:Username,</td>
+        <td>None</td>
+        <td>None</td>
+      </tr>
+      
+    </table>
+
+    <table>
+      <tr>
+        <th class="table--title" colspan="2">Entities</th>
+      </tr>
+      <tr class="table--head">
+        <th>ENTITY</th>
+        <th>ATTRIBUTES</th>
+      </tr>
+      <tr class="table-light">
+        <td>Movies</td>
+        <td>ID, Title, Description, Genre, Director, ImagePath, Featured (Y/N)</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>Director</td>
+        <td>ID, Name, Bio, Birth year, Death year</td>
+      </tr>
+      <tr class="table-light">
+        <td>Genre</td>
+        <td>ID, Name, Description</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>Users</td>
+        <td>ID, Username, Password, Email, Birthday, FavoriteMovies</td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <th class="table--title" colspan="7">Example Movie</th>
+      </tr>
+      <tr class="table--head">
+        <th>ID</th>
+        <th>TITLE</th>
+        <th>DESCRIPTION</th>
+        <th>GENREID</th>
+        <th>DIRECTORID</th>
+        <th>IMAGEPATH</th>
+        <th>FEATURED</th>
+      </tr>
+      <tr class="table-light">
+        <td>1</td>
+        <td>The Silence of the Lambs</td>
+        <td>“A young FBI cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer.”</td>
+        <td>1</td>
+        <td>1</td>
+        <td>silenceofthelambs.png</td>
+        <td>true</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>2</td>
+        <td>The Lion King</td>
+        <td>“This Disney animated feature follows the adventures of the young lion Simba.”</td>
+        <td>2</td>
+        <td>3</td>
+        <td>thelionkind.png</td>
+        <td>False</td>
+      </tr>
+      <tr class="table-light">
+        <td>3</td>
+        <td>Stuart Little</td>
+        <td>“When the Littles go to an orphanage to adopt a new family member, a charming young mouse named Stuart is chosen.”</td>
+        <td>3</td>
+        <td>3</td>
+        <td>stuartlittle.png</td>
+        <td>false</td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <th class="table--title" colspan="3">Genre</th>
+      </tr>
+      <tr class="table--head">
+        <th>GENREID</th>
+        <th>NAME</th>
+        <th>DESCRIPTION</th>
+      </tr>
+      <tr class="table-light">
+        <td>1</td>
+        <td>Thriller</td>
+        <td>Thriller film, also known as suspense film or suspense thriller, is a broad film genre that involves excitement and suspense in the audience.</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>2</td>
+        <td>Animated</td>
+        <td>Animation is a method in which pictures are manipulated to appear as moving images. In traditional animation, images are drawn or painted by hand on transparent celluloid sheets to be photographed and exhibited on film.</td>
+      </tr>
+      <tr class="table-light">
+        <td>3</td>
+        <td>Comedy</td>
+        <td>Comedy is a genre of film in which the main emphasis is on humor. These films are designed to make the audience laugh through amusement and most often work by exaggerating characteristics for humorous effect.</td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <th class="table--title" colspan="5">Director</th>
+      </tr>
+      <tr class="table--head"> 
+        <th>ID</th>
+        <th>NAME</th>
+        <th>BIO</th>
+        <th>BIRTHYEAR</th>
+        <th>DEATHYEAR</th>
+      </tr>
+      <tr class="table-light">
+        <td>1</td>
+        <td>Jonathan Demme</td>
+        <td>Robert Jonathan Demme was an American director, producer, and screenwriter.</td>
+        <td>1944</td>
+        <td>2017</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>2</td>
+        <td>Judd Apatow</td>
+        <td>Judd Apatow is an American producer, writer, director, actor, and stand-up comedian.</td>
+        <td>1967</td>
+        <td>--</td>
+      </tr>
+      <tr class="table-light">
+        <td>3</td>
+        <td>Robert Minkoff</td>
+        <td>Robert Ralph Minkoff is an American filmmaker. He is known for directing the double Academy Award–winning animated feature The Lion King, along with directing Stuart Little.</td>
+        <td>1962</td>
+        <td>--</td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <th class="table--title" colspan="5">Users</th>
+      </tr>
+      <tr class="table--head">
+        <th>ID</th>
+        <th>USERNAME</th>
+        <th>PASSSWORD</th>
+        <th>EMAIL</th>
+        <th>BIRTHDATE</th>
+      </tr>
+      <tr class="table-light">
+        <td>1</td>
+        <td>davidcohen2580</td>
+        <td>test123</td>
+        <td>davidcohen2580@gmail.com</td>
+        <td>09/10/1988</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>2</td>
+        <td>larissamayer</td>
+        <td>password555</td>
+        <td>larissalove@yahoo.com</td>
+        <td>05/04/1995</td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <th class="table--title" colspan="3">User-Movies</th>
+      </tr>
+      <tr class="table--head">
+        <th>USERMOVIEID</th>
+        <th>USERID</th>
+        <th>MOVIEID</th>
+      </tr>
+      <tr class="table-light">
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+      <tr class="table-shaded">
+        <td>2</td>
+        <td>1</td>
+        <td>2</td>
+      </tr>
+      <tr class="table-light">
+        <td>3</td>
+        <td>2</td>
+        <td>2</td>
       </tr>
     </table>
   </body>
