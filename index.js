@@ -2,8 +2,14 @@ const express = require('express'),
   morgan = require('morgan'),
   mongoose = require('mongoose'),
   Models = require('./models.js'),
+  passport = require('passport'),
+  auth = require('./auth')(app);
+  cors = require('cors'),
   bodyParser = require('body-parser');
 
+const { check, valiidationResult } = require('express-validator');
+
+require('./passport');
 const Movies = Models.Movie;
 const Users = Models.User;
 
@@ -11,13 +17,20 @@ mongoose.connect('mongodb://localhost:27017/movieDB', { useNewUrlParser: true, u
 
 const app = express();
 
+let allowedOrigins = ['http://localhost:8080'];
+
 app.use(bodyParser.json());
-
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
-
 app.use(express.static('public'));
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
 app.use(morgan('common'));
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -99,30 +112,43 @@ app.get('/users/:Username', passport.authenticate('jwt',{ session: false }), (re
 
 // post requests 
 
-app.post('/users', (req, res) => {
-  Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + ' already exists');
-      } else {
-        Users
-          .create({
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
+app.post('/users',
+  [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username includes characters that are not allowed').isAlphanumeric(),
+    check('Password', 'Password is required').not.isEmpty(),
+    check('Email', 'Please enter a valid email').isEmail()
+  ], (req, res) => {
+    let errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.Password)
+    Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Username + ' already exists');
+        } else {
+          Users
+            .create({
+              Username: req.body.Username,
+              Password: hashedPassword,
+              Email: req.body.Email,
+              Birthday: req.body.Birthday
+            })
+            .then((user) => {res.status(201).json(user) })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
           })
-          .then((user) => {res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    })
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      })
 });
 
 app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt',{ session: false }), (req, res) => {
@@ -143,11 +169,12 @@ app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt',{ sessi
 // put requests 
 
 app.put('/users/:Username/', passport.authenticate('jwt',{ session: false }), (req, res) => {
+  let hashedPassword = Users.hashPassword(req.body.Password)
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $set:
       {
         Username: req.body.Username,
-        Password: req.body.Password,
+        Password: hashedPassword,
         Email: req.body.Email,
         Birthday: req.body.Birthday
       }
@@ -195,7 +222,7 @@ app.delete('/users/:Username/Movies/:MovieID', passport.authenticate('jwt',{ ses
     }
   );
 });
-``
-app.listen(8080, () => {
-  console.log('App is running on port 8080.')
+const port = process.env.PORT || 8080
+app.listen(port, '0.0.0.0'), () => {
+  console.log('App is running on port ' + port)
 });
