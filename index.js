@@ -13,14 +13,16 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // mongoose.connect('mongodb://localhost:27017/movieDB', { useNewUrlParser: true, useUnifiedTopology: true });
-process.env.CONNECTION_URI;
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
 
 const app = express();
-const auth = require('./auth')(app);
+
 
 let allowedOrigins = ['http://localhost:8080'];
 
 app.use(bodyParser.json());
+const auth = require('./auth')(app);
 app.use(express.static('public'));
 app.use(cors({
   origin: (origin, callback) => {
