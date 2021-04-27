@@ -119,7 +119,7 @@ app.post('/users',
   [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username includes characters that are not allowed').isAlphanumeric(),
-    check('Password', 'Password is required').not.isEmpty(),
+    check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Please enter a valid email').isEmail()
   ], (req, res) => {
     let errors = validationResult(req);
