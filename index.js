@@ -9,37 +9,24 @@ const express = require('express'),
 const { check, validationResult } = require('express-validator');
 
 require('./passport');
+
 const Movies = Models.Movie;
 const Users = Models.User;
 
 // mongoose.connect('mongodb://localhost:27017/movieDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-
 const app = express();
-
-
-let allowedOrigins = ['http://localhost:8080'];
 
 app.use(bodyParser.json());
 const auth = require('./auth')(app);
 app.use(express.static('public'));
-app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
-      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
-}));
+app.use(cors());
 app.use(morgan('common'));
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Oops! It Broke.')
 })
-
 
 // get requests 
 
@@ -171,7 +158,13 @@ app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt',{ sessi
 
 // put requests 
 
-app.put('/users/:Username/', passport.authenticate('jwt',{ session: false }), (req, res) => {
+app.put('/users/:Username/', passport.authenticate('jwt',{ session: false }), 
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username includes characters that are not allowed').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Please enter a valid email').isEmail()
+], (req, res) => {
   let hashedPassword = Users.hashPassword(req.body.Password)
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $set:
