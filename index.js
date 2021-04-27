@@ -6,7 +6,7 @@ const express = require('express'),
   cors = require('cors'),
   bodyParser = require('body-parser');
 
-const { check, valiidationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 
 require('./passport');
 const Movies = Models.Movie;
