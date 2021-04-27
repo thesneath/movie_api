@@ -3,7 +3,6 @@ const express = require('express'),
   mongoose = require('mongoose'),
   Models = require('./models.js'),
   passport = require('passport'),
-  auth = require('./auth')(app);
   cors = require('cors'),
   bodyParser = require('body-parser');
 
@@ -17,6 +16,7 @@ const Users = Models.User;
 process.env.CONNECTION_URI;
 
 const app = express();
+const auth = require('./auth')(app);
 
 let allowedOrigins = ['http://localhost:8080'];
 
