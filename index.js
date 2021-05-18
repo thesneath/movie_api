@@ -19,9 +19,9 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 const auth = require('./auth')(app);
 app.use(express.static('public'));
-app.use(cors());
 app.use(morgan('common'));
 app.use((err, req, res, next) => {
   console.error(err.stack);
