@@ -2,7 +2,7 @@
 
 This is a REST API for an application called MyFlix that interacts with a database that stores data about users and movies.
 
-See API [documentation](alexdb.herokuapp.com/documentation.html)
+See API [documentation](http://alexdb.herokuapp.com/documentation.html)
 
 ## Features
 
